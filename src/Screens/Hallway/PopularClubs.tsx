@@ -1,0 +1,27 @@
+import React from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Divider } from "../../components";
+import { HallwayClubSnippet } from "./components";
+
+const PopularClubs = () => {
+  return (
+    <View>
+      <Text></Text>
+      <FlatList
+        horizontal={true}
+        data={[1, 2, 3, 4, 5]}
+        renderItem={() => <HallwayClubSnippet />}
+        ItemSeparatorComponent={() => (
+          <Divider variant="horizontal" size={20} />
+        )}
+        keyExtractor={(item) => item.toString()}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ padding: 10 }}
+      />
+    </View>
+  );
+};
+
+export default PopularClubs;
+
+const styles = StyleSheet.create({});

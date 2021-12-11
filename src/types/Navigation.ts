@@ -1,3 +1,5 @@
-export type mainStack = {
+export type mainStackRoutes = {
   hallway: undefined;
+  messages: undefined;
+  explore: undefined
 };

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Avatar, NotificationBell } from "../../../components";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { mainStackRoutes } from "../../../types";
 
-const Header = () => {
+interface Props {
+  navigation: StackNavigationProp<mainStackRoutes, "hallway">;
+}
+const Header: FC<Props> = ({ navigation }) => {
   const { width } = useWindowDimensions();
   const iconMargin = width * 0.07;
   const marginStyle = { marginRight: iconMargin };
@@ -16,6 +21,9 @@ const Header = () => {
         size={30}
         color="black"
         style={{ flex: 1 }}
+        onPress={() => {
+          navigation.navigate("explore");
+        }}
       />
       <View style={styles.flexItems}>
         <Octicons

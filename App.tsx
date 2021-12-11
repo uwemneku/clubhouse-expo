@@ -1,3 +1,4 @@
+import { Portal, PortalHost, PortalProvider } from "@gorhom/portal";
 import {
   DefaultTheme,
   NavigationContainer,
@@ -14,16 +15,20 @@ const MyTheme: Theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#27ae61",
+    card: "#5576AB",
     background: "#f2f0e4",
   },
 };
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <NavigationContainer theme={MyTheme}>
-        <MainNavigator />
-      </NavigationContainer>
-    </SafeAreaView>
+    <PortalProvider>
+      <PortalHost name="h" />
+      <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
+        <NavigationContainer theme={MyTheme}>
+          <MainNavigator />
+        </NavigationContainer>
+      </SafeAreaView>
+    </PortalProvider>
   );
 }
 

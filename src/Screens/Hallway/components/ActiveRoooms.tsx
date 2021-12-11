@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Avatar, Divider } from "../../../components";
+import { AppText, Avatar, Divider, MenuButton } from "../../../components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const ActiveRoooms = () => {
   const { colors } = useTheme();
@@ -18,31 +19,25 @@ const ActiveRoooms = () => {
         ]}
       >
         <View style={[styles.flexItems, { alignItems: "center" }]}>
-          <Text style={{ fontWeight: "400" }}>RANTS&sBANTS</Text>
+          <AppText>RANTS&sBANTS</AppText>
           <Divider variant="horizontal" size={10} />
           <Foundation name="home" size={20} color={colors.primary} />
         </View>
         <View style={styles.flexItems}>
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
+          <AntDesign name="ellipsis1" size={24} color="black" />
         </View>
       </View>
       {/* ===========Room Title========= */}
-      <Text
-        style={{
-          width: "80%",
-          marginVertical: 5,
-          fontSize: 18,
-          fontWeight: "bold",
-        }}
+      <AppText
+        weight="bold"
+        size="medium"
         numberOfLines={1}
         ellipsizeMode="tail"
         lineBreakMode="clip"
       >
         Is it time to canacel Tion Wayne? #rants&bants
-      </Text>
-
+      </AppText>
+      <MenuButton />
       <View style={[styles.flexItems, { marginTop: 20 }]}>
         {/* ==============Avatars=========== */}
         <View style={styles.flexItems}>
@@ -54,7 +49,25 @@ const ActiveRoooms = () => {
         <Divider variant="horizontal" size={20} />
         <View>
           {/* ==============Names===================== */}
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, marginBottom: 10 }}>
+            <View style={styles.flexItems}>
+              <Text style={styles.name}>Sydd</Text>
+              <MaterialCommunityIcons
+                name="chat-processing"
+                size={20}
+                color="gray"
+                style={{ elevation: 3 }}
+              />
+            </View>
+            <View style={styles.flexItems}>
+              <Text style={styles.name}>Sydd</Text>
+              <MaterialCommunityIcons
+                name="chat-processing"
+                size={20}
+                color="gray"
+                style={{ elevation: 3 }}
+              />
+            </View>
             <View style={styles.flexItems}>
               <Text style={styles.name}>Sydd</Text>
               <MaterialCommunityIcons
@@ -96,13 +109,6 @@ const styles = StyleSheet.create({
   },
   flexItems: {
     flexDirection: "row",
-  },
-  dot: {
-    width: 5,
-    height: 5,
-    borderRadius: 5,
-    backgroundColor: "gray",
-    marginHorizontal: 2,
   },
   name: {
     fontSize: 20,
