@@ -6,8 +6,13 @@ import Avatar from "./Avatar";
 import Divider from "./Divider";
 
 interface Props {
+  /**This props determines if the about section of a profile will be rendered in the component */
   showDetails: boolean;
 }
+
+/**This renders a snippet of peoples profile
+ * Along with a button to follow or unfollow people
+ */
 const People = ({ showDetails }: Props) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const toggleFollowingStatus = useCallback(() => {
@@ -16,7 +21,10 @@ const People = ({ showDetails }: Props) => {
   return (
     <View style={styles.container}>
       <Avatar size={60} />
+
       <Divider size={10} variant="horizontal" />
+
+      {/* Name and details starts here */}
       <View style={{ flex: 1 }}>
         <AppText>Uwem Isreal</AppText>
         {showDetails && (
@@ -28,7 +36,10 @@ const People = ({ showDetails }: Props) => {
           </AppText>
         )}
       </View>
+      {/* Name and details ends here */}
+      
       <Divider size={10} variant="horizontal" />
+
       <View style={{ flex: 0.5 }}>
         <Button
           label={isFollowing ? "Following" : "Follow"}

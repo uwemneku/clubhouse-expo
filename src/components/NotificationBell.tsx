@@ -1,8 +1,12 @@
-import React from "react";
+import React, {FC} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
-const NotificationBell = () => {
+interface Props{
+  numberOfNotification: number
+}
+const NotificationBell:FC<Props> = ({numberOfNotification}) => {
+  //Todo: Place the numberOfNotification props inside the component
   return (
     <View style={styles.container}>
       <FontAwesome name="bell-o" size={30} color="black" />

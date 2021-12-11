@@ -3,6 +3,7 @@ import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
 
+//Todo: Redo code to be reusable
 const MenuButton = () => {
   const { width, height } = useWindowDimensions();
   const [isOpen, setIsOpen] = useState<boolean>(false);
