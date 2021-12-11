@@ -11,8 +11,9 @@ interface Props {
   /**Increase of reduce the size of the button */
   scale?: number;
   color: "primary" | "secondary";
+  onPress?: () => void;
 }
-const Button: FC<Props> = ({ variant, color, label, scale = 1 }) => {
+const Button: FC<Props> = ({ variant, color, label, onPress, scale = 1 }) => {
   const {
     colors: { primary, card },
   } = useTheme();
@@ -32,6 +33,7 @@ const Button: FC<Props> = ({ variant, color, label, scale = 1 }) => {
 
   return (
     <TouchableOpacity
+      onPress={() => onPress && onPress()}
       activeOpacity={0.8}
       style={[
         styles.container,
@@ -45,7 +47,7 @@ const Button: FC<Props> = ({ variant, color, label, scale = 1 }) => {
   );
 };
 
-export default Button;
+export default React.memo(Button);
 
 const styles = StyleSheet.create({
   container: {

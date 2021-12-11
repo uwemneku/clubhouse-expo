@@ -1,5 +1,6 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { Divider } from "../../components";
 import { HallwayClubSnippet } from "./components";
 

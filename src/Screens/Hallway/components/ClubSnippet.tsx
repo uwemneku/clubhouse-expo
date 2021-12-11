@@ -51,7 +51,7 @@ const ClubSnippet = () => {
   );
 };
 
-export default ClubSnippet;
+export default React.memo(ClubSnippet);
 
 const styles = StyleSheet.create({
   container: {

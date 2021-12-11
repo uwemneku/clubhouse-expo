@@ -12,6 +12,7 @@ interface Props extends TextProps {
   size?: "small" | "medium" | "large";
   weight?: "normal" | "meduim" | "semiBold" | "bold";
   color?: string;
+  style?: StyleProp<TextStyle>;
   textAlign?: TextStyle["textAlign"];
 }
 const AppText: FC<Props> = ({
@@ -20,6 +21,7 @@ const AppText: FC<Props> = ({
   children,
   color,
   textAlign,
+  style,
   ...props
 }) => {
   const fontSize =
@@ -36,7 +38,7 @@ const AppText: FC<Props> = ({
       : "normal";
   return (
     <Text
-      style={[{ fontSize, fontWeight, color, textAlign }, props.style]}
+      style={[{ fontSize, fontWeight, color, textAlign }, style]}
       {...props}
     >
       {children}
@@ -44,6 +46,6 @@ const AppText: FC<Props> = ({
   );
 };
 
-export default AppText;
+export default React.memo(AppText);
 
 const styles = StyleSheet.create({});

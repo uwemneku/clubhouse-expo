@@ -11,7 +11,7 @@ const NotificationBell = () => {
   );
 };
 
-export default NotificationBell;
+export default React.memo(NotificationBell);
 
 const styles = StyleSheet.create({
   container: {

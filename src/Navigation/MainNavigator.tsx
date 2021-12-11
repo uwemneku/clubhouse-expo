@@ -5,7 +5,7 @@ import {
   createStackNavigator,
 } from "@react-navigation/stack";
 import { mainStackRoutes } from "../types";
-import { HallwayScreen, Messages } from "../Screens";
+import { HallwayScreen, Messages, RecentlyListenedTo } from "../Screens";
 import { Explore } from "../Screens/Explore";
 
 const { Navigator, Screen } = createStackNavigator<mainStackRoutes>();
@@ -21,6 +21,7 @@ const MainNavigator = () => {
       <Screen name="hallway" component={HallwayScreen} />
       <Screen name="messages" component={Messages} />
       <Screen name="explore" component={Explore} />
+      <Screen name="recentlyListenedTo" component={RecentlyListenedTo} />
     </Navigator>
   );
 };

@@ -1,14 +1,25 @@
+import { Ionicons } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-
-const Header = () => {
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AppText, BackButton, ScreenHeader } from "../../../components";
+import { mainStackRoutes } from "../../../types";
+interface Props {
+  navigation: StackNavigationProp<mainStackRoutes, "explore">;
+}
+const Header = ({ navigation }: Props) => {
   return (
-    <View style={styles.container}>
-      <Ionicons name="chevron-back" size={24} color="black" />
-      <Text>EXPLORE</Text>
-      <Ionicons name="ios-people-circle-outline" size={24} color="black" />
-    </View>
+    <ScreenHeader
+      middleComponent={"EXPLORE"}
+      rightComponent={
+        <TouchableOpacity
+          onPress={() => navigation.navigate("recentlyListenedTo")}
+        >
+          <Ionicons name="ios-people-circle-outline" size={40} color="black" />
+        </TouchableOpacity>
+      }
+    />
   );
 };
 

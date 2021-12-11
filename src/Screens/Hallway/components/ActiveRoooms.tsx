@@ -1,11 +1,13 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { AppText, Avatar, Divider, MenuButton } from "../../../components";
+import React, { useState } from "react";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { AppText, Avatar, Divider } from "../../../components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { useSharedValue } from "react-native-reanimated";
+import { Menu, MenuDivider, MenuItem } from "react-native-material-menu";
 
 const ActiveRoooms = () => {
   const { colors } = useTheme();
@@ -24,7 +26,7 @@ const ActiveRoooms = () => {
           <Foundation name="home" size={20} color={colors.primary} />
         </View>
         <View style={styles.flexItems}>
-          <AntDesign name="ellipsis1" size={24} color="black" />
+          <MenuButton />
         </View>
       </View>
       {/* ===========Room Title========= */}
@@ -37,7 +39,7 @@ const ActiveRoooms = () => {
       >
         Is it time to canacel Tion Wayne? #rants&bants
       </AppText>
-      <MenuButton />
+
       <View style={[styles.flexItems, { marginTop: 20 }]}>
         {/* ==============Avatars=========== */}
         <View style={styles.flexItems}>
@@ -97,7 +99,34 @@ const ActiveRoooms = () => {
   );
 };
 
-export default ActiveRoooms;
+const MenuButton = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  return (
+    <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <Menu
+        style={{ marginTop: 20 }}
+        visible={isOpen}
+        anchor={
+          <AntDesign
+            name="ellipsis1"
+            size={24}
+            color="black"
+            onPress={toggleMenu}
+          />
+        }
+        onRequestClose={toggleMenu}
+      >
+        <MenuItem onPress={toggleMenu}>Hide this room</MenuItem>
+        <MenuItem onPress={toggleMenu}>Report room title</MenuItem>
+      </Menu>
+    </View>
+  );
+};
+export default React.memo(ActiveRoooms);
 
 const styles = StyleSheet.create({
   container: {

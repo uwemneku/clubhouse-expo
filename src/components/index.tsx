@@ -5,3 +5,6 @@ export { default as MenuButton } from "./MenuButton";
 export { default as AppText } from "./AppText";
 export { default as Button } from "./Button";
 export { default as ClubIcon } from "./ClubIcon";
+export { default as BackButton } from "./BackButton";
+export { default as People } from "./People";
+export { default as ScreenHeader } from "./ScreenHeader";

@@ -7,4 +7,4 @@ const ClubIcon = () => {
   return <Foundation name="home" size={15} color={colors.primary} />;
 };
 
-export default ClubIcon;
+export default React.memo(ClubIcon);

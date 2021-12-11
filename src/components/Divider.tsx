@@ -19,6 +19,6 @@ const Divider: FC<Props> = ({ size, variant }) => {
   );
 };
 
-export default Divider;
+export default React.memo(Divider);
 
 const styles = StyleSheet.create({});
