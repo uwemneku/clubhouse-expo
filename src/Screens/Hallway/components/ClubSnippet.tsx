@@ -13,12 +13,12 @@ const ClubSnippet = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Avatar size={60} />
+        <Avatar size={50} />
         <Divider variant="horizontal" size={20} />
         <View style={{ flex: 1 }}>
           <AppText
             size="small"
-            weight="normal"
+            weight="meduim"
             numberOfLines={2}
             textBreakStrategy="simple"
             ellipsizeMode="tail"
@@ -27,7 +27,7 @@ const ClubSnippet = () => {
             IMPOSING ON IMPOSTER SYNDROM IMPOSING ONM <ClubIcon />
           </AppText>
           <Divider size={5} variant="vertical" />
-          <AppText numberOfLines={3}>
+          <AppText numberOfLines={3} weight="Light" size="small">
             Welcome to the Imposing On Imposter Syndrome Club Research Suggests
             that we have Important
           </AppText>

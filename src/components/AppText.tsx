@@ -10,7 +10,16 @@ import {
 
 interface Props extends TextProps {
   size?: "small" | "medium" | "large";
-  weight?: "normal" | "meduim" | "semiBold" | "bold";
+  weight?:
+    | "Thin"
+    | "normal"
+    | "meduim"
+    | "semiBold"
+    | "bold"
+    | "Light"
+    | "ExtraLight"
+    | "ExtraBold"
+    | "Black";
   color?: string;
   style?: StyleProp<TextStyle>;
   textAlign?: TextStyle["textAlign"];
@@ -25,20 +34,39 @@ const AppText: FC<Props> = ({
   ...props
 }) => {
   const fontSize =
-    size === "small" ? 14 : size === "medium" ? 18 : size === "large" ? 20 : 14;
-  const fontWeight: TextStyle["fontWeight"] =
-    weight === "normal"
-      ? "normal"
+    size === "small" ? 12 : size === "medium" ? 16 : size === "large" ? 20 : 12;
+  const fontFamily =
+    weight === "Thin"
+      ? "Inter_100Thin"
+      : weight === "ExtraLight"
+      ? "Inter_200ExtraLight"
+      : weight === "Light"
+      ? "Inter_300Light"
+      : weight === "normal"
+      ? "Inter_400Regular"
       : weight === "meduim"
-      ? "500"
+      ? "Inter_500Medium"
       : weight == "semiBold"
-      ? "700"
+      ? "Inter_600SemiBold"
       : weight === "bold"
-      ? "bold"
-      : "normal";
+      ? "Inter_700Bold"
+      : weight === "ExtraBold"
+      ? "Inter_800ExtraBold"
+      : weight === "Black"
+      ? "Inter_900Black"
+      : "Inter_400Regular";
+
   return (
     <Text
-      style={[{ fontSize, fontWeight, color, textAlign }, style]}
+      style={[
+        {
+          fontSize,
+          fontFamily,
+          color,
+          textAlign,
+        },
+        style,
+      ]}
       {...props}
     >
       {children}

@@ -1,11 +1,10 @@
-import { PortalHost } from "@gorhom/portal";
 import { useTheme } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { FC, useRef } from "react";
 import {
   FlatList as RootFlatList,
+  FlatListProps,
   StyleSheet,
-  TouchableWithoutFeedback,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -13,11 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import { Divider } from "../../components";
 import { mainStackRoutes } from "../../types";
-import {
-  ActiveRoooms,
-  HallwayClubSnippet,
-  HallwayScreenHeader,
-} from "./components";
+import { ActiveRoooms, HallwayScreenHeader, SearchBar } from "./components";
 import PopularClubs from "./PopularClubs";
 
 interface Props {
@@ -38,52 +33,54 @@ const Hallway: FC<Props> = ({ navigation }) => {
       <HallwayScreenHeader navigation={navigation} />
       <ScrollView
         horizontal={true}
-        snapToInterval={width}
         centerContent={true}
-        disableIntervalMomentum={true}
+        pagingEnabled={true}
         waitFor={ref}
         contentOffset={{ x: width, y: 0 }}
       >
         <View style={{ width }}></View>
-        {/* <Animated.View> */}
-        <FlatList
-          onTouchStart={({ nativeEvent: { pageX } }) => {
-            // When the swipe is disabled, the position of the finger along the x axis is not stored
-            touchStartRef.current = isSwipeListnerEnabled.current ? pageX : 0;
-          }}
-          onTouchCancel={({ nativeEvent: { pageX } }) => {
-            touchEndRef.current = pageX;
-            const diff = touchStartRef.current - touchEndRef.current;
+        <View>
+          <Animated.View>
+            <SearchBar />
+          </Animated.View>
+          <FlatList
+            onTouchStart={({ nativeEvent: { pageX } }) => {
+              // When the swipe is disabled, the position of the finger along the x axis is not stored
+              touchStartRef.current = isSwipeListnerEnabled.current ? pageX : 0;
+            }}
+            onTouchCancel={({ nativeEvent: { pageX } }) => {
+              touchEndRef.current = pageX;
+              const diff = touchStartRef.current - touchEndRef.current;
 
-            if (diff > 10) {
-              console.log("Swipe Right");
-              setTimeout(() => {
-                navigation.navigate("messages");
-              }, 50);
+              if (diff > 10) {
+                console.log("Swipe Right");
+                setTimeout(() => {
+                  navigation.navigate("messages");
+                }, 50);
+              }
+            }}
+            fadingEdgeLength={50}
+            ItemSeparatorComponent={() => (
+              <Divider size={25} variant="vertical" />
+            )}
+            contentContainerStyle={[styles.rooms, { width }]}
+            data={[1, 2, 3, 4]}
+            renderItem={({ index }) =>
+              index !== 2 ? (
+                <ActiveRoooms />
+              ) : (
+                <View
+                  onTouchStart={() => (isSwipeListnerEnabled.current = false)} // disable swipe listner when scrolling popular clubs
+                  onTouchCancel={() => (isSwipeListnerEnabled.current = true)} // enable swipe listner immdiately the user stop scrolling
+                >
+                  <PopularClubs />
+                </View>
+              )
             }
-          }}
-          fadingEdgeLength={100}
-          ItemSeparatorComponent={() => (
-            <Divider size={30} variant="vertical" />
-          )}
-          contentContainerStyle={[styles.rooms, { width }]}
-          data={[1, 2, 3, 4]}
-          renderItem={({ index }) =>
-            index !== 2 ? (
-              <ActiveRoooms />
-            ) : (
-              <View
-                onTouchStart={() => (isSwipeListnerEnabled.current = false)} // disable swipe listner when scrolling popular clubs
-                onTouchCancel={() => (isSwipeListnerEnabled.current = true)} // enable swipe listner immdiately the user stop scrolling
-              >
-                <PopularClubs />
-              </View>
-            )
-          }
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-        {/* </Animated.View> */}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -96,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rooms: {
-    padding: 20,
+    paddingHorizontal: 20,
     paddingBottom: 100,
   },
 });

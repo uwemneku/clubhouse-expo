@@ -7,7 +7,7 @@ import { HallwayClubSnippet } from "./components";
 const PopularClubs = () => {
   return (
     <View>
-      <Text></Text>
+      {/* <Text></Text> */}
       <FlatList
         horizontal={true}
         data={[1, 2, 3, 4, 5]}
@@ -17,7 +17,7 @@ const PopularClubs = () => {
         )}
         keyExtractor={(item) => item.toString()}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ padding: 10 }}
+        contentContainerStyle={{ padding: 5 }}
       />
     </View>
   );

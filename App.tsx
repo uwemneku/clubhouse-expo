@@ -9,6 +9,19 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MainNavigator } from "./src/Navigation";
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter";
+import AppLoading from "expo-app-loading";
 
 const MyTheme: Theme = {
   ...DefaultTheme,
@@ -20,12 +33,23 @@ const MyTheme: Theme = {
   },
 };
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+  });
   return (
     <PortalProvider>
       <PortalHost name="h" />
       <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
         <NavigationContainer theme={MyTheme}>
-          <MainNavigator />
+          {fontsLoaded ? <MainNavigator /> : <AppLoading />}
         </NavigationContainer>
       </SafeAreaView>
     </PortalProvider>
