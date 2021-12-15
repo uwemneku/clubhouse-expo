@@ -4,9 +4,9 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AppText, BackButton, ScreenHeader } from "../../../components";
-import { mainStackRoutes } from "../../../types";
+import { StackParamList } from "../../../types";
 interface Props {
-  navigation: StackNavigationProp<mainStackRoutes, "explore">;
+  navigation: StackNavigationProp<StackParamList, "explore">;
 }
 const Header = ({ navigation }: Props) => {
   return (

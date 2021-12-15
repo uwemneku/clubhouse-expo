@@ -1,3 +1,6 @@
 export * from './Hallway'
 export * from './Messages'
 export * from './RecentlyListenedTo'
+export * from './Profile'
+export * from './Settings'
+export * from './Rooms'

@@ -4,11 +4,11 @@ import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AppText, Divider, People } from "../../components";
-import { mainStackRoutes } from "../../types";
+import { StackParamList } from "../../types";
 import { ExploreScreenHeader } from "./components";
 
 interface Props {
-  navigation: StackNavigationProp<mainStackRoutes, "explore">;
+  navigation: StackNavigationProp<StackParamList, "explore">;
 }
 const Explore = ({ navigation }: Props) => {
   return (

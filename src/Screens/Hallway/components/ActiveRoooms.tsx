@@ -4,15 +4,32 @@ import { AppText, Avatar, Divider } from "../../../components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
-import { useTheme } from "@react-navigation/native";
+import {
+  NavigationProp,
+  useNavigation,
+  useTheme,
+} from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { StackParamList } from "../../../types";
 
+/**
+ * Snipppets of active rooms shown in the hallway
+ */
 const ActiveRoooms = () => {
   const { colors } = useTheme();
   const avatarSize = 50;
+  const navigation = useNavigation<NavigationProp<StackParamList, "hallway">>();
+
+  const navigateToRoom = () => navigation.navigate("room");
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={navigateToRoom}
+      activeOpacity={0.8}
+      style={styles.container}
+    >
       {/* ==========Heading================ */}
       <View
         style={[
@@ -68,7 +85,7 @@ const ActiveRoooms = () => {
                 <MaterialCommunityIcons
                   name="chat-processing"
                   size={15}
-                  color="lightgray"
+                  color="darkgray"
                   style={{ elevation: 3, marginLeft: 5 }}
                 />
               </View>
@@ -77,19 +94,19 @@ const ActiveRoooms = () => {
           <View>
             <AppText size="small" weight="normal" style={styles.count}>
               301
-              <Ionicons name="person" size={15} color="lightgray" />
+              <Ionicons name="person" size={15} color="darkgray" />
               {" / "}11
               <MaterialCommunityIcons
                 name="chat-processing"
                 size={15}
-                color="lightgray"
+                color="darkgray"
                 style={{ elevation: 3 }}
               />
             </AppText>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

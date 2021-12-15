@@ -47,6 +47,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     padding: 10,
-    // paddingHorizontal: 10,
   },
 });

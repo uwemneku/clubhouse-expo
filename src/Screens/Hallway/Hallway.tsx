@@ -1,6 +1,6 @@
 import { useTheme } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { FC, useRef } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import {
   FlatList as RootFlatList,
   FlatListProps,
@@ -9,24 +9,55 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
-import { Divider } from "../../components";
-import { mainStackRoutes } from "../../types";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  runOnJS,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { AppFooter, Divider } from "../../components";
+import { StackParamList } from "../../types";
 import { ActiveRoooms, HallwayScreenHeader, SearchBar } from "./components";
 import PopularClubs from "./PopularClubs";
 
 interface Props {
-  navigation: StackNavigationProp<mainStackRoutes, "hallway">;
+  navigation: StackNavigationProp<StackParamList, "hallway">;
 }
 const FlatList = Animated.createAnimatedComponent(RootFlatList);
 const Hallway: FC<Props> = ({ navigation }) => {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const ref = useRef(null);
+  const searchBarOffset = useSharedValue<number>(0);
 
   const isSwipeListnerEnabled = useRef<boolean>(true);
   const touchStartRef = useRef<number>(0);
   const touchEndRef = useRef<number>(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    width,
+    backgroundColor: colors.background,
+    marginTop: searchBarOffset.value,
+  }));
+
+  useEffect(() => {}, [searchBarOffset.value]);
+  const flatListScrollHandler = useAnimatedScrollHandler<{ prev: number }>({
+    onBeginDrag: ({ contentOffset }, ctx) => {
+      ctx.prev = searchBarOffset.value;
+    },
+    onScroll: ({ contentOffset }, ctx) => {
+      const { y } = contentOffset;
+      const scrollDirection = Math.abs(y) > Math.abs(ctx.prev) ? "up" : "down";
+      if (scrollDirection === "up") {
+        searchBarOffset.value = withTiming(-50, { duration: 250 });
+      } else {
+        searchBarOffset.value = withTiming(0, { duration: 250 });
+      }
+      ctx.prev = y;
+    },
+  });
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -35,15 +66,23 @@ const Hallway: FC<Props> = ({ navigation }) => {
         horizontal={true}
         centerContent={true}
         pagingEnabled={true}
-        waitFor={ref}
-        contentOffset={{ x: width, y: 0 }}
+        contentOffset={{ x: width, y: 0 }} //scroll to hallway when the component mounts
       >
         <View style={{ width }}></View>
         <View>
-          <Animated.View>
+          <Animated.View style={[styles.searchBarContainer, animatedStyle]}>
             <SearchBar />
           </Animated.View>
           <FlatList
+            data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+            fadingEdgeLength={50}
+            bounces={false}
+            alwaysBounceVertical={false}
+            initialNumToRender={10}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={[styles.rooms, { width }]}
+            showsVerticalScrollIndicator={false}
+            onScroll={flatListScrollHandler}
             onTouchStart={({ nativeEvent: { pageX } }) => {
               // When the swipe is disabled, the position of the finger along the x axis is not stored
               touchStartRef.current = isSwipeListnerEnabled.current ? pageX : 0;
@@ -59,12 +98,9 @@ const Hallway: FC<Props> = ({ navigation }) => {
                 }, 50);
               }
             }}
-            fadingEdgeLength={50}
             ItemSeparatorComponent={() => (
               <Divider size={25} variant="vertical" />
             )}
-            contentContainerStyle={[styles.rooms, { width }]}
-            data={[1, 2, 3, 4]}
             renderItem={({ index }) =>
               index !== 2 ? (
                 <ActiveRoooms />
@@ -77,11 +113,10 @@ const Hallway: FC<Props> = ({ navigation }) => {
                 </View>
               )
             }
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
           />
         </View>
       </ScrollView>
+      <AppFooter />
     </View>
   );
 };
@@ -94,6 +129,12 @@ const styles = StyleSheet.create({
   },
   rooms: {
     paddingHorizontal: 20,
+    paddingTop: 60,
     paddingBottom: 100,
+  },
+  searchBarContainer: {
+    paddingHorizontal: 20,
+    position: "absolute",
+    zIndex: 1,
   },
 });

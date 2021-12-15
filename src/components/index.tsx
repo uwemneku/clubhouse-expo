@@ -8,3 +8,5 @@ export { default as ClubIcon } from "./ClubIcon";
 export { default as BackButton } from "./BackButton";
 export { default as People } from "./People";
 export { default as ScreenHeader } from "./ScreenHeader";
+export { default as ShareIcon } from "./ShareIcon";
+export { default as AppFooter } from "./AppFooter";

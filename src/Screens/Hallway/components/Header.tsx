@@ -5,15 +5,22 @@ import { Octicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Avatar, NotificationBell } from "../../../components";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { mainStackRoutes } from "../../../types";
+import { StackParamList } from "../../../types";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {
-  navigation: StackNavigationProp<mainStackRoutes, "hallway">;
+  navigation: StackNavigationProp<StackParamList, "hallway">;
 }
 const Header: FC<Props> = ({ navigation }) => {
   const { width } = useWindowDimensions();
   const iconMargin = width * 0.07;
   const marginStyle = { marginRight: iconMargin };
+
+  const navigateToExplore = () => navigation.navigate("explore");
+  const navigateToProfile = () =>
+    //TODO: change id to logged in user id
+    navigation.navigate("profile", { id: "1234" });
+
   return (
     <View style={[styles.flexItems, styles.container]}>
       <FontAwesome5
@@ -21,9 +28,7 @@ const Header: FC<Props> = ({ navigation }) => {
         size={30}
         color="black"
         style={{ flex: 1 }}
-        onPress={() => {
-          navigation.navigate("explore");
-        }}
+        onPress={navigateToExplore}
       />
       <View style={styles.flexItems}>
         <Octicons
@@ -41,7 +46,9 @@ const Header: FC<Props> = ({ navigation }) => {
         <View style={marginStyle}>
           <NotificationBell />
         </View>
-        <Avatar size={35} />
+        <TouchableOpacity onPress={navigateToProfile}>
+          <Avatar size={35} />
+        </TouchableOpacity>
       </View>
     </View>
   );

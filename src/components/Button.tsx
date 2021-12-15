@@ -1,6 +1,11 @@
 import { useTheme } from "@react-navigation/native";
 import React, { FC } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import AppText from "./AppText";
 
 interface Props {
@@ -12,8 +17,17 @@ interface Props {
   scale?: number;
   color: "primary" | "secondary";
   onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
-const Button: FC<Props> = ({ variant, color, label, onPress, scale = 1 }) => {
+
+const Button: FC<Props> = ({
+  variant,
+  color,
+  label,
+  onPress,
+  scale = 1,
+  style,
+}) => {
   const {
     colors: { primary, card },
   } = useTheme();
@@ -38,6 +52,7 @@ const Button: FC<Props> = ({ variant, color, label, onPress, scale = 1 }) => {
       style={[
         styles.container,
         { backgroundColor, transform: [{ scale }], borderColor },
+        style,
       ]}
     >
       <AppText textAlign="center" weight="semiBold" color={textColor}>

@@ -22,6 +22,7 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import AppLoading from "expo-app-loading";
+import { AppFooter } from "./src/components";
 
 const MyTheme: Theme = {
   ...DefaultTheme,

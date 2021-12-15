@@ -1,31 +1,82 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from "@react-navigation/stack";
-import { mainStackRoutes } from "../types";
-import { HallwayScreen, Messages, RecentlyListenedTo } from "../Screens";
+import { StackParamList } from "../types";
+import {
+  HallwayScreen,
+  Messages,
+  Profile,
+  RecentlyListenedTo,
+  Rooms,
+  Settings,
+} from "../Screens";
 import { Explore } from "../Screens/Explore";
+import { useTheme } from "@react-navigation/native";
 
-const { Navigator, Screen } = createStackNavigator<mainStackRoutes>();
+const { Navigator, Screen } = createStackNavigator<StackParamList>();
 
 const MainNavigator = () => {
+  const {
+    colors: { background },
+  } = useTheme();
   return (
     <Navigator
-      screenOptions={{
+      screenOptions={({ route: { name } }) => ({
         headerShown: false,
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}
+        presentation: "transparentModal",
+        cardStyle: {
+          backgroundColor: name === "room" ? "transparent" : background,
+        },
+        cardStyleInterpolator:
+          name === "settings"
+            ? CardStyleInterpolators.forBottomSheetAndroid
+            : CardStyleInterpolators.forHorizontalIOS,
+      })}
     >
       <Screen name="hallway" component={HallwayScreen} />
       <Screen name="messages" component={Messages} />
-      <Screen name="explore" component={Explore} />
+      <Screen
+        name="explore"
+        component={Explore}
+        options={{
+          cardStyleInterpolator: ({ current: { progress } }) => ({
+            cardStyle: {
+              transform: [
+                {
+                  translateX: progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-100, 0],
+                  }),
+                },
+              ],
+            },
+          }),
+        }}
+      />
       <Screen name="recentlyListenedTo" component={RecentlyListenedTo} />
+      <Screen name="profile" component={Profile} />
+      <Screen name="settings" component={Settings} />
+      <Screen
+        name="room"
+        component={Rooms}
+        options={{
+          cardStyle: {
+            backgroundColor: "transparent",
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        }}
+      />
     </Navigator>
   );
 };
 
 export default MainNavigator;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  j: {
+    transform: [{ translateX: 0 }],
+  },
+});
