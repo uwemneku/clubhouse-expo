@@ -13,13 +13,15 @@ interface Props {
   variant: "filled" | "outlined";
   /**Text content of the button */
   label: string | JSX.Element;
-  /**Increase of reduce the size of the button */
-  scale?: number;
+  /**Alter the size of the button */
+  scale?: number; //Todo : Remove this prop
+  /**Set the color based on the theme of the app */
   color: "primary" | "secondary";
+  /**Function called when the button is pressed */
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }
-
+/**Renders a button with rounded edges */
 const Button: FC<Props> = ({
   variant,
   color,

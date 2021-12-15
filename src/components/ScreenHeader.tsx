@@ -6,9 +6,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import AppText from "./AppText";
 
 interface Props {
+  /**The component show in the middle of the header */
   middleComponent?: JSX.Element | string;
+  /**The component shown to the right of the header */
   rightComponent?: JSX.Element;
 }
+
+/**This renders a screen header across the app with a fixed back button */
 const ScreenHeader: FC<Props> = ({ middleComponent, rightComponent }) => {
   const navigation = useNavigation();
   return (
@@ -20,7 +24,8 @@ const ScreenHeader: FC<Props> = ({ middleComponent, rightComponent }) => {
       >
         <Ionicons name="chevron-back" size={40} color="black" />
       </TouchableOpacity>
-      <View style={{ flex: 1, marginLeft: rightComponent ? 0 : -20 }}>
+      {/* Center the middleComponent in when a right component is missing */}
+      <View style={{ flex: 1, marginLeft: rightComponent ? 0 : -20 }}> 
         {typeof middleComponent === "string" ? (
           <AppText
             textAlign="center"
