@@ -16,14 +16,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { AppText, Button, Divider } from "../../components";
+import { AppFooter, AppText, Button, Divider } from "../../components";
 import { StackParamList } from "../../types";
-import {
-  ActiveRoooms,
-  HallwayScreenHeader,
-  RoomFooter,
-  SearchBar,
-} from "./components";
+import { ActiveRoooms, HallwayScreenHeader, SearchBar } from "./components";
 import PopularClubs from "./PopularClubs";
 import { FontAwesome } from "@expo/vector-icons";
 interface Props {
@@ -140,7 +135,7 @@ const Hallway: FC<Props> = ({ navigation }) => {
       </View>
       <Portal>
         <Pressable onPress={() => navigation.navigate("room")}>
-          <RoomFooter />
+          <AppFooter />
         </Pressable>
       </Portal>
     </View>
