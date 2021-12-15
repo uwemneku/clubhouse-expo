@@ -1,23 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { AppText, Avatar } from "../../../components";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
-const RoomAvatar = () => {
-  1;
+interface Props {
+  isSpeaking: boolean;
+  isMuted: boolean;
+  isAdmin: boolean;
+}
+const RoomAvatar = ({ isMuted, isSpeaking }: Props) => {
   const animatedBorderStyle = useAnimatedStyle(() => ({
-    overflow: "visible",
+    borderColor: isSpeaking ? "darkgray" : "transparent",
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 40,
   }));
   return (
     <View style={styles.container}>
       <Animated.View style={[animatedBorderStyle]}>
         <Avatar size={80} />
-        <MicIcoon />
+        {isMuted && <MicIcoon />}
       </Animated.View>
-      <AppText weight="meduim" size="small" style={{ marginTop: 5 }}>
-        Valeeta
-      </AppText>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <AdminIcon />
+        <AppText weight="meduim" size="small">
+          {" "}
+          Valeeta
+        </AppText>
+      </View>
     </View>
   );
 };
@@ -33,6 +47,17 @@ const MicIcoon = () => {
   );
 };
 
+const AdminIcon = () => {
+  const {
+    colors: { primary },
+  } = useTheme();
+  return (
+    <View style={[{ backgroundColor: primary }, styles.greenIcon]}>
+      <Ionicons name="md-star" size={10} color="white" />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     alignSelf: "flex-start",
@@ -40,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "visible",
     padding: 5,
+    paddingVertical: 0,
   },
   mic: {
     backgroundColor: "white",
@@ -64,5 +90,9 @@ const styles = StyleSheet.create({
     height: "100%",
     position: "absolute",
     transform: [{ rotate: "-45deg" }],
+  },
+  greenIcon: {
+    borderRadius: 2000,
+    padding: 2,
   },
 });

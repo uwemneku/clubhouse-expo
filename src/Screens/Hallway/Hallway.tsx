@@ -1,28 +1,31 @@
+import { Portal } from "@gorhom/portal";
 import { useTheme } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { FC, useEffect, useRef } from "react";
 import {
   FlatList as RootFlatList,
-  FlatListProps,
+  Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
-  Extrapolate,
-  interpolate,
-  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { AppFooter, Divider } from "../../components";
+import { AppText, Button, Divider } from "../../components";
 import { StackParamList } from "../../types";
-import { ActiveRoooms, HallwayScreenHeader, SearchBar } from "./components";
+import {
+  ActiveRoooms,
+  HallwayScreenHeader,
+  RoomFooter,
+  SearchBar,
+} from "./components";
 import PopularClubs from "./PopularClubs";
-
+import { FontAwesome } from "@expo/vector-icons";
 interface Props {
   navigation: StackNavigationProp<StackParamList, "hallway">;
 }
@@ -116,7 +119,30 @@ const Hallway: FC<Props> = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-      <AppFooter />
+      <View style={styles.footerContainer}>
+        <Button
+          label={
+            <AppText weight="bold" size="medium">
+              + Start a room
+            </AppText>
+          }
+          variant="filled"
+          color="primary"
+          onPress={() => navigation.navigate("createRoom")}
+          style={styles.footerButton}
+        />
+        <FontAwesome
+          name="paper-plane-o"
+          size={24}
+          color="black"
+          style={{ transform: [{ rotate: "-25deg" }] }}
+        />
+      </View>
+      <Portal>
+        <Pressable onPress={() => navigation.navigate("room")}>
+          <RoomFooter />
+        </Pressable>
+      </Portal>
     </View>
   );
 };
@@ -136,5 +162,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     position: "absolute",
     zIndex: 1,
+  },
+  footerContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    paddingVertical: 10,
+  },
+  footerButton: {
+    padding: 10,
+    paddingHorizontal: 20,
   },
 });

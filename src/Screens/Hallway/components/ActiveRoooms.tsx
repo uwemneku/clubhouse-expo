@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppText, Avatar, Divider } from "../../../components";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,7 +11,6 @@ import {
 } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackParamList } from "../../../types";
 
 /**
@@ -117,24 +116,23 @@ const MenuButton = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <Pressable
+      onPress={toggleMenu}
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Menu
         style={{ marginTop: 20 }}
         visible={isOpen}
-        anchor={
-          <AntDesign
-            name="ellipsis1"
-            size={24}
-            color="black"
-            onPress={toggleMenu}
-          />
-        }
+        anchor={<AntDesign name="ellipsis1" size={24} color="black" />}
         onRequestClose={toggleMenu}
       >
         <MenuItem onPress={toggleMenu}>Hide this room</MenuItem>
         <MenuItem onPress={toggleMenu}>Report room title</MenuItem>
       </Menu>
-    </View>
+    </Pressable>
   );
 };
 export default React.memo(ActiveRoooms);

@@ -20,7 +20,7 @@ interface Props {
 
 const Profile: FC<Props> = ({ navigation, route }) => {
   //TODO: Get user id from global state
-  const isAdmin = false;
+  const isAdmin = true;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ProfileScreenHeader {...{ isAdmin, navigation }} />

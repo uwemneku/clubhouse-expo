@@ -15,6 +15,8 @@ import {
 } from "../Screens";
 import { Explore } from "../Screens/Explore";
 import { useTheme } from "@react-navigation/native";
+import { useAppDispatch } from "../store";
+import { toggleRoomUiDisplayState } from "../features";
 
 const { Navigator, Screen } = createStackNavigator<StackParamList>();
 
@@ -22,6 +24,8 @@ const MainNavigator = () => {
   const {
     colors: { background },
   } = useTheme();
+
+  const dispatch = useAppDispatch();
   return (
     <Navigator
       screenOptions={({ route: { name } }) => ({
@@ -67,6 +71,10 @@ const MainNavigator = () => {
             backgroundColor: "transparent",
           },
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        }}
+        listeners={{
+          beforeRemove: () => dispatch(toggleRoomUiDisplayState()),
+          focus: () => dispatch(toggleRoomUiDisplayState()),
         }}
       />
     </Navigator>

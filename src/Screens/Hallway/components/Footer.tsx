@@ -1,14 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const RoomFooter = () => {
-  return (
-    <View>
-      <Text></Text>
-    </View>
-  );
+const Footer = () => {
+  return <View></View>;
 };
 
-export default RoomFooter;
+export default Footer;
 
 const styles = StyleSheet.create({});

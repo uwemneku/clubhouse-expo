@@ -1,12 +1,11 @@
-import { Portal, PortalHost, PortalProvider } from "@gorhom/portal";
+import { PortalHost, PortalProvider } from "@gorhom/portal";
 import {
   DefaultTheme,
   NavigationContainer,
   Theme,
 } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MainNavigator } from "./src/Navigation";
 import {
@@ -22,7 +21,8 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import AppLoading from "expo-app-loading";
-import { AppFooter } from "./src/components";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
 
 const MyTheme: Theme = {
   ...DefaultTheme,
@@ -46,14 +46,16 @@ export default function App() {
     Inter_800ExtraBold,
   });
   return (
-    <PortalProvider>
-      <PortalHost name="h" />
-      <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
-        <NavigationContainer theme={MyTheme}>
-          {fontsLoaded ? <MainNavigator /> : <AppLoading />}
-        </NavigationContainer>
-      </SafeAreaView>
-    </PortalProvider>
+    <Provider store={store}>
+      <PortalProvider>
+        <PortalHost name="h" />
+        <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
+          <NavigationContainer theme={MyTheme}>
+            {fontsLoaded ? <MainNavigator /> : <AppLoading />}
+          </NavigationContainer>
+        </SafeAreaView>
+      </PortalProvider>
+    </Provider>
   );
 }
 

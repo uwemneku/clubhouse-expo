@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { AppText, Avatar, Button, Divider } from "../../components";
+import { Avatar, Divider } from "../../components";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import Animated, {
   interpolate,
@@ -16,7 +16,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParamList } from "../../types";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { RoomAvatar } from "./components";
 
 interface Props {
@@ -40,13 +40,9 @@ const Rooms = ({ navigation }: Props) => {
     backgroundColor: background,
     padding: 20,
   }));
-  const startClosingAnimation = () => {};
 
   const handleBackNavigation = () => {
     transfromY.value = height;
-    setTimeout(() => {
-      navigation.goBack();
-    }, 500);
   };
   useFocusEffect(
     useCallback(() => {
@@ -55,9 +51,9 @@ const Rooms = ({ navigation }: Props) => {
     }, [])
   );
   useEffect(() => {
-    navigation.addListener("beforeRemove", () => {});
-
-    return () => navigation.removeListener("beforeRemove", () => {});
+    navigation.addListener("beforeRemove", handleBackNavigation);
+    return () =>
+      navigation.removeListener("beforeRemove", handleBackNavigation);
   }, []);
 
   return (
@@ -68,7 +64,7 @@ const Rooms = ({ navigation }: Props) => {
           size={30}
           color="black"
           style={{ flex: 1 }}
-          onPress={handleBackNavigation}
+          onPress={() => navigation.goBack()}
         />
         <View style={styles.flexItems}>
           <Ionicons name="md-document-outline" size={30} color="black" />
@@ -78,7 +74,7 @@ const Rooms = ({ navigation }: Props) => {
       </Animated.View>
       <Animated.View style={[styles.rooms, animatedRoomStyle]}>
         <View style={{ flex: 1 }}>
-          {isFocused ? (
+          {true ? (
             <FlatList
               data={[
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
@@ -86,10 +82,19 @@ const Rooms = ({ navigation }: Props) => {
               ]}
               renderItem={() => <RoomAvatar />}
               numColumns={3}
+              initialNumToRender={10}
+              viewabilityConfig={{
+                viewAreaCoveragePercentThreshold: 10,
+              }}
+              ItemSeparatorComponent={() => (
+                <Divider size={0} variant="vertical" />
+              )}
               columnWrapperStyle={{
                 justifyContent: "space-between",
+                alignContent: "flex-start",
                 padding: 10,
               }}
+              removeClippedSubviews={true}
               keyExtractor={(item) => item.toString()}
             />
           ) : (
