@@ -33,28 +33,28 @@ const Rooms = ({ navigation, route }: Props) => {
   } = useTheme();
   const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
-  const transfromY = useSharedValue(height);
+  const transformY = useSharedValue(height);
   const [isFocused, setIsFocused] = useState(true);
   const isNewRoom = id !== activeRoomId;
   const [isRoomLoaded, setIsRoomLoaded] = useState(!isNewRoom);
 
   const animatedRoomStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateY: withTiming(transfromY.value, { duration: 500 }) },
+      { translateY: withTiming(transformY.value, { duration: 500 }) },
     ],
   }));
   const animatedHeaderStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(transfromY.value, [height, 0], [0, 1]),
+    opacity: interpolate(transformY.value, [height, 0], [0, 1]),
     backgroundColor: background,
     padding: 20,
   }));
 
   const handleBackNavigation = () => {
-    transfromY.value = height;
+    transformY.value = height;
   };
   useFocusEffect(
     useCallback(() => {
-      transfromY.value = 0;
+      transformY.value = 0;
       setIsFocused(true);
     }, [])
   );

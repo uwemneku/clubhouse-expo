@@ -17,7 +17,7 @@ import { useAppDispatch } from "../../../store";
 /**
  * Snipppets of active rooms shown in the hallway
  */
-const ActiveRoooms = () => {
+const ActiveRooms = () => {
   const { colors } = useTheme();
   const avatarSize = 50;
   const navigation = useNavigation<NavigationProp<StackParamList, "hallway">>();
@@ -82,7 +82,7 @@ const ActiveRoooms = () => {
             {[1, 2, 3].map((item) => (
               <View key={item} style={styles.flexItems}>
                 <AppText size="medium" weight="normal">
-                  Sydd
+                  John doe
                 </AppText>
                 <MaterialCommunityIcons
                   name="chat-processing"
@@ -138,7 +138,7 @@ const MenuButton = () => {
     </Pressable>
   );
 };
-export default React.memo(ActiveRoooms);
+export default React.memo(ActiveRooms);
 
 const styles = StyleSheet.create({
   container: {

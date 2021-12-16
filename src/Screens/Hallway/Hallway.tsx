@@ -1,7 +1,7 @@
 import { Portal } from "@gorhom/portal";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { FC, useCallback, useEffect, useRef } from "react";
+import React, { FC, useCallback, useRef } from "react";
 import {
   BackHandler,
   FlatList as RootFlatList,
@@ -18,7 +18,7 @@ import Animated, {
 import { AppFooter, Divider } from "../../components";
 import { StackParamList } from "../../types";
 import {
-  ActiveRoooms,
+  ActiveRooms,
   HallwayFooter,
   HallwayScreenHeader,
   SearchBar,
@@ -31,33 +31,37 @@ const FlatList = Animated.createAnimatedComponent(RootFlatList);
 const Hallway: FC<Props> = ({ navigation }) => {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
+
   const scrollRef = useRef<Animated.ScrollView>(null);
   const searchBarOffset = useSharedValue<number>(0);
   const scrollViewX = useSharedValue<number>(0);
 
-  const isSwipeListnerEnabled = useRef<boolean>(true);
+  const isSwipeListenerEnabled = useRef<boolean>(true);
   const touchStartRef = useRef<number>(0);
   const touchEndRef = useRef<number>(0);
 
-  const animatedStyle = useAnimatedStyle(() => ({
+  const searchBarAnimatedStyle = useAnimatedStyle(() => ({
     width,
     backgroundColor: colors.background,
     marginTop: searchBarOffset.value,
   }));
 
-  const flatListScrollHandler = useAnimatedScrollHandler<{ prev: number }>({
+  const flatListScrollHandler = useAnimatedScrollHandler<{
+    prevScrollOffset: number;
+  }>({
     onBeginDrag: ({ contentOffset }, ctx) => {
-      ctx.prev = searchBarOffset.value;
+      ctx.prevScrollOffset = searchBarOffset.value;
     },
     onScroll: ({ contentOffset }, ctx) => {
       const { y } = contentOffset;
-      const scrollDirection = Math.abs(y) > Math.abs(ctx.prev) ? "up" : "down";
-      if (scrollDirection === "up") {
-        searchBarOffset.value = withTiming(-50, { duration: 250 });
+      const flatListScrollDirection =
+        Math.abs(y) > Math.abs(ctx.prevScrollOffset) ? "up" : "down";
+      if (flatListScrollDirection === "up") {
+        searchBarOffset.value = withTiming(-50, { duration: 250 }); //hide searchBar
       } else {
-        searchBarOffset.value = withTiming(0, { duration: 250 });
+        searchBarOffset.value = withTiming(0, { duration: 250 }); //show searchBar
       }
-      ctx.prev = y;
+      ctx.prevScrollOffset = y;
     },
   });
 
@@ -67,17 +71,25 @@ const Hallway: FC<Props> = ({ navigation }) => {
     },
   });
 
+  //This changes the behavior of the back button when users scroll to the "recently listened to" screen
+  //Instead of the app closing, the hallway is scrolled back into view
   useFocusEffect(
     useCallback(() => {
-      const isActiveOpen = () => {
+      const isScrolledToRecentlyListenedTo = () => {
         if (scrollViewX.value < 10) {
           scrollRef.current?.scrollTo({ x: width, y: 0, animated: true });
           return true;
         } else return false;
       };
-      BackHandler.addEventListener("hardwareBackPress", isActiveOpen);
+      BackHandler.addEventListener(
+        "hardwareBackPress",
+        isScrolledToRecentlyListenedTo
+      );
       return () =>
-        BackHandler.removeEventListener("hardwareBackPress", isActiveOpen);
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          isScrolledToRecentlyListenedTo
+        );
     }, [])
   );
 
@@ -94,7 +106,9 @@ const Hallway: FC<Props> = ({ navigation }) => {
       >
         <View style={{ width }}></View>
         <View>
-          <Animated.View style={[styles.searchBarContainer, animatedStyle]}>
+          <Animated.View
+            style={[styles.searchBarContainer, searchBarAnimatedStyle]}
+          >
             <SearchBar />
           </Animated.View>
           <FlatList
@@ -109,7 +123,9 @@ const Hallway: FC<Props> = ({ navigation }) => {
             onScroll={flatListScrollHandler}
             onTouchStart={({ nativeEvent: { pageX } }) => {
               // When the swipe is disabled, the position of the finger along the x axis is not stored
-              touchStartRef.current = isSwipeListnerEnabled.current ? pageX : 0;
+              touchStartRef.current = isSwipeListenerEnabled.current
+                ? pageX
+                : 0;
             }}
             onTouchCancel={({ nativeEvent: { pageX } }) => {
               touchEndRef.current = pageX;
@@ -127,11 +143,11 @@ const Hallway: FC<Props> = ({ navigation }) => {
             )}
             renderItem={({ index }) =>
               index !== 2 ? (
-                <ActiveRoooms />
+                <ActiveRooms />
               ) : (
                 <View
-                  onTouchStart={() => (isSwipeListnerEnabled.current = false)} // disable swipe listner when scrolling popular clubs
-                  onTouchCancel={() => (isSwipeListnerEnabled.current = true)} // enable swipe listner immdiately the user stop scrolling
+                  onTouchStart={() => (isSwipeListenerEnabled.current = false)} // disable swipe listener when scrolling popular clubs
+                  onTouchCancel={() => (isSwipeListenerEnabled.current = true)} // enable swipe listener immediately the user stop scrolling
                 >
                   <PopularClubs />
                 </View>
