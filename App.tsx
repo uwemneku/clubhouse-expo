@@ -47,14 +47,14 @@ export default function App() {
   });
   return (
     <Provider store={store}>
-      <PortalProvider>
-        <PortalHost name="h" />
-        <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
-          <NavigationContainer theme={MyTheme}>
+      <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
+        <NavigationContainer theme={MyTheme}>
+          <PortalProvider>
+            <PortalHost name="h" />
             {fontsLoaded ? <MainNavigator /> : <AppLoading />}
-          </NavigationContainer>
-        </SafeAreaView>
-      </PortalProvider>
+          </PortalProvider>
+        </NavigationContainer>
+      </SafeAreaView>
     </Provider>
   );
 }

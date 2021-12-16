@@ -1,26 +1,29 @@
 import { Portal } from "@gorhom/portal";
-import { useTheme } from "@react-navigation/native";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useCallback, useEffect, useRef } from "react";
 import {
+  BackHandler,
   FlatList as RootFlatList,
-  Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { AppFooter, AppText, Button, Divider } from "../../components";
+import { AppFooter, Divider } from "../../components";
 import { StackParamList } from "../../types";
-import { ActiveRoooms, HallwayScreenHeader, SearchBar } from "./components";
+import {
+  ActiveRoooms,
+  HallwayFooter,
+  HallwayScreenHeader,
+  SearchBar,
+} from "./components";
 import PopularClubs from "./PopularClubs";
-import { FontAwesome } from "@expo/vector-icons";
 interface Props {
   navigation: StackNavigationProp<StackParamList, "hallway">;
 }
@@ -28,7 +31,9 @@ const FlatList = Animated.createAnimatedComponent(RootFlatList);
 const Hallway: FC<Props> = ({ navigation }) => {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
+  const scrollRef = useRef<Animated.ScrollView>(null);
   const searchBarOffset = useSharedValue<number>(0);
+  const scrollViewX = useSharedValue<number>(0);
 
   const isSwipeListnerEnabled = useRef<boolean>(true);
   const touchStartRef = useRef<number>(0);
@@ -40,7 +45,6 @@ const Hallway: FC<Props> = ({ navigation }) => {
     marginTop: searchBarOffset.value,
   }));
 
-  useEffect(() => {}, [searchBarOffset.value]);
   const flatListScrollHandler = useAnimatedScrollHandler<{ prev: number }>({
     onBeginDrag: ({ contentOffset }, ctx) => {
       ctx.prev = searchBarOffset.value;
@@ -57,14 +61,36 @@ const Hallway: FC<Props> = ({ navigation }) => {
     },
   });
 
+  const scrollViewHandler = useAnimatedScrollHandler({
+    onScroll: ({ contentOffset: { x } }, ctx) => {
+      scrollViewX.value = x;
+    },
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      const isActiveOpen = () => {
+        if (scrollViewX.value < 10) {
+          scrollRef.current?.scrollTo({ x: width, y: 0, animated: true });
+          return true;
+        } else return false;
+      };
+      BackHandler.addEventListener("hardwareBackPress", isActiveOpen);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", isActiveOpen);
+    }, [])
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <HallwayScreenHeader navigation={navigation} />
-      <ScrollView
+      <Animated.ScrollView
         horizontal={true}
         centerContent={true}
         pagingEnabled={true}
         contentOffset={{ x: width, y: 0 }} //scroll to hallway when the component mounts
+        onScroll={scrollViewHandler}
+        ref={scrollRef}
       >
         <View style={{ width }}></View>
         <View>
@@ -92,7 +118,7 @@ const Hallway: FC<Props> = ({ navigation }) => {
               if (diff > 10) {
                 console.log("Swipe Right");
                 setTimeout(() => {
-                  navigation.navigate("messages");
+                  navigation.navigate("backChanel");
                 }, 50);
               }
             }}
@@ -113,30 +139,13 @@ const Hallway: FC<Props> = ({ navigation }) => {
             }
           />
         </View>
-      </ScrollView>
-      <View style={styles.footerContainer}>
-        <Button
-          label={
-            <AppText weight="bold" size="medium">
-              + Start a room
-            </AppText>
-          }
-          variant="filled"
-          color="primary"
-          onPress={() => navigation.navigate("createRoom")}
-          style={styles.footerButton}
-        />
-        <FontAwesome
-          name="paper-plane-o"
-          size={24}
-          color="black"
-          style={{ transform: [{ rotate: "-25deg" }] }}
-        />
-      </View>
+      </Animated.ScrollView>
+      <HallwayFooter
+        parentScrollValue={scrollViewX}
+        parentScrollViewRef={scrollRef}
+      />
       <Portal>
-        <Pressable onPress={() => navigation.navigate("room")}>
-          <AppFooter />
-        </Pressable>
+        <AppFooter />
       </Portal>
     </View>
   );
@@ -157,21 +166,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     position: "absolute",
     zIndex: 1,
-  },
-  footerContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20,
-    paddingVertical: 10,
-  },
-  footerButton: {
-    padding: 10,
-    paddingHorizontal: 20,
   },
 });

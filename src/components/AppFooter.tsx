@@ -7,15 +7,24 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import AppText from "./AppText";
 import Divider from "./Divider";
 import Avatar from "./Avatar";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { StackParamList } from "../types";
+import { leaveRoom } from "../features";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const AppFooter = () => {
-  const isRoomOpen = useAppSelector((state) => state.ui.isRoomUiOpen);
   const animatedValue = useSharedValue(0);
+  const animtedMargin = useSharedValue(0);
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<StackParamList, "hallway">>();
+  const [activeroom, isRoomUiOpen] = useAppSelector((state) => [
+    state.room.activeRoomId,
+    state.ui.isRoomUiOpen,
+  ]);
 
   const animatedIconStyle = useAnimatedStyle(() => ({
     transform: [
@@ -42,17 +51,34 @@ const AppFooter = () => {
       },
     ],
   }));
+
+  const animatedContainerStyle = useAnimatedStyle(() => ({
+    marginBottom: withTiming(activeroom ? 0 : -60, { duration: 250 }),
+  }));
+
   useEffect(() => {
-    animatedValue.value = isRoomOpen ? 0 : 1;
-  }, [isRoomOpen]);
+    animatedValue.value = isRoomUiOpen ? 0 : 1;
+  }, [isRoomUiOpen, activeroom]);
+
+  const handleRoomExit = () => {
+    dispatch(leaveRoom());
+    //navigate back if the room screen is focused
+    isRoomUiOpen && navigation.goBack();
+  };
+
   return (
-    <View style={[styles.container, styles.flexItem]}>
+    <AnimatedPressable
+      style={[styles.container, styles.flexItem, animatedContainerStyle]}
+      onPress={() => {
+        navigation.navigate("room", {
+          id: activeroom || "",
+        });
+      }}
+    >
       {/* <Animated.View style={[animatedButtonStyle]}> */}
       <AnimatedPressable
         style={[styles.flexItem, styles.button, animatedButtonStyle]}
-        onPress={() => {
-          isRoomOpen && console.log("pressed");
-        }}
+        onPress={handleRoomExit}
       >
         <FontAwesome name="hand-peace-o" size={24} color="brown" />
         <Divider size={10} variant="horizontal" />
@@ -78,7 +104,7 @@ const AppFooter = () => {
 
       <View style={styles.flexItem}>
         <Animated.View style={[animatedIconStyle]}>
-          <TouchableOpacity onPress={() => console.log("the leave sign")}>
+          <TouchableOpacity onPress={handleRoomExit}>
             <FontAwesome
               name="hand-peace-o"
               size={24}
@@ -106,7 +132,7 @@ const AppFooter = () => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </AnimatedPressable>
   );
 };
 
@@ -117,6 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "space-between",
     padding: 10,
+    height: 60,
   },
   button: {
     position: "absolute",

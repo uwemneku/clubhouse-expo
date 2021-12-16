@@ -12,6 +12,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { Menu, MenuItem } from "react-native-material-menu";
 import { StackParamList } from "../../../types";
+import { useAppDispatch } from "../../../store";
 
 /**
  * Snipppets of active rooms shown in the hallway
@@ -21,7 +22,9 @@ const ActiveRoooms = () => {
   const avatarSize = 50;
   const navigation = useNavigation<NavigationProp<StackParamList, "hallway">>();
 
-  const navigateToRoom = () => navigation.navigate("room");
+  const navigateToRoom = () => {
+    navigation.navigate("room", { id: "hello" });
+  };
 
   return (
     <TouchableOpacity

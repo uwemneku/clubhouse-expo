@@ -4,7 +4,7 @@ export interface UISliceState {
     isRoomUiOpen: boolean;
 }
 
-const initialState: UISliceState = {isRoomUiOpen:false}
+const initialState: UISliceState = {isRoomUiOpen:false};
 
 export const  uiSlice = createSlice({
     name: "ui",

@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { Avatar, Divider } from "../../components";
-import { useFocusEffect, useTheme } from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useTheme } from "@react-navigation/native";
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -18,17 +18,25 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParamList } from "../../types";
 import { FlatList } from "react-native-gesture-handler";
 import { RoomAvatar } from "./components";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { joinRoom } from "../../features";
 
 interface Props {
   navigation: StackNavigationProp<StackParamList, "room">;
+  route: RouteProp<StackParamList, "room">;
 }
-const Rooms = ({ navigation }: Props) => {
+const Rooms = ({ navigation, route }: Props) => {
+  const { id } = route.params;
+  const activeRoomId = useAppSelector((state) => state.room.activeRoomId);
   const {
     colors: { background },
   } = useTheme();
+  const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
   const transfromY = useSharedValue(height);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(true);
+  const isNewRoom = id !== activeRoomId;
+  const [isRoomLoaded, setIsRoomLoaded] = useState(!isNewRoom);
 
   const animatedRoomStyle = useAnimatedStyle(() => ({
     transform: [
@@ -50,11 +58,25 @@ const Rooms = ({ navigation }: Props) => {
       setIsFocused(true);
     }, [])
   );
+
+  // useEffect(() => {}, [loa]);
   useEffect(() => {
+    isNewRoom && handleLoadNewRoom();
     navigation.addListener("beforeRemove", handleBackNavigation);
     return () =>
       navigation.removeListener("beforeRemove", handleBackNavigation);
   }, []);
+
+  const handleLoadNewRoom = () => {
+    dispatch(joinRoom(id));
+    //TODO: add api call to load new room data
+    //note that this place holder logic is just for demo as state can be updated even when this component is not unmounted leading to errors
+    const timeoutId = setTimeout(() => {
+      setIsRoomLoaded(true);
+    }, 1500);
+
+    return () => clearTimeout(timeoutId);
+  };
 
   return (
     <View style={[styles.container]}>
@@ -74,7 +96,7 @@ const Rooms = ({ navigation }: Props) => {
       </Animated.View>
       <Animated.View style={[styles.rooms, animatedRoomStyle]}>
         <View style={{ flex: 1 }}>
-          {true ? (
+          {isRoomLoaded ? (
             <FlatList
               data={[
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,

@@ -41,7 +41,7 @@ const MainNavigator = () => {
       })}
     >
       <Screen name="hallway" component={HallwayScreen} />
-      <Screen name="messages" component={Messages} />
+      <Screen name="backChanel" component={Messages} />
       <Screen
         name="explore"
         component={Explore}
