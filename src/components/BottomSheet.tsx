@@ -76,7 +76,6 @@ const BottomSheet = ({
       ctx.startY = sheetTranslate.value;
     },
     onActive: ({ translationY }, ctx) => {
-      console.log(translationY, bottomSheetHeight.current);
       // stop capturing if the user has dragged the sheet up more than 100px
       if (translationY > -100) {
         sheetTranslate.value = ctx.startY + translationY;
@@ -110,9 +109,7 @@ const BottomSheet = ({
                   nativeEvent: {
                     layout: { height },
                   },
-                }) => {
-                  bottomSheetHeight.current = height;
-                }}
+                }) => {}}
               >
                 <View style={styles.dash} />
                 {content}
