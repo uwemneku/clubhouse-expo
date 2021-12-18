@@ -23,7 +23,7 @@ const Footer = ({ parentScrollValue, parentScrollViewRef }: Props) => {
       {
         translateX: interpolate(
           parentScrollValue.value,
-          [0, width],
+          [0, width * 0.8],
           [width, 0]
         ),
       },
@@ -89,6 +89,6 @@ const styles = StyleSheet.create({
   },
   footerButton: {
     padding: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
 });

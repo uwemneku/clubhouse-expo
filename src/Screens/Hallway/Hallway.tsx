@@ -34,11 +34,11 @@ const Hallway: FC<Props> = ({ navigation }) => {
 
   const scrollRef = useRef<Animated.ScrollView>(null);
   const searchBarOffset = useSharedValue<number>(0);
-  const scrollViewX = useSharedValue<number>(0);
+  const scrollViewOffset = useSharedValue<number>(0);
 
-  const isSwipeListenerEnabled = useRef<boolean>(true);
-  const touchStartRef = useRef<number>(0);
-  const touchEndRef = useRef<number>(0);
+  const isSwipeListenerEnabled = useRef<boolean>(true); // is swipe listener attached to the flatList enabled
+  const touchStartRef = useRef<number>(0); // touch start position for swipe
+  const touchEndRef = useRef<number>(0); // touch end position for swipe
 
   const searchBarAnimatedStyle = useAnimatedStyle(() => ({
     width,
@@ -65,9 +65,10 @@ const Hallway: FC<Props> = ({ navigation }) => {
     },
   });
 
+  //This style is used to move the AppFooter component when the ScrollView is scrolled
   const scrollViewHandler = useAnimatedScrollHandler({
     onScroll: ({ contentOffset: { x } }, ctx) => {
-      scrollViewX.value = x;
+      scrollViewOffset.value = x;
     },
   });
 
@@ -75,20 +76,21 @@ const Hallway: FC<Props> = ({ navigation }) => {
   //Instead of the app closing, the hallway is scrolled back into view
   useFocusEffect(
     useCallback(() => {
-      const isScrolledToRecentlyListenedTo = () => {
-        if (scrollViewX.value < 10) {
+      //check if "recently listened to" screen is in view
+      const isRecentlyListenedToScreenInView = () => {
+        if (scrollViewOffset.value < 10) {
           scrollRef.current?.scrollTo({ x: width, y: 0, animated: true });
           return true;
         } else return false;
       };
       BackHandler.addEventListener(
         "hardwareBackPress",
-        isScrolledToRecentlyListenedTo
+        isRecentlyListenedToScreenInView
       );
       return () =>
         BackHandler.removeEventListener(
           "hardwareBackPress",
-          isScrolledToRecentlyListenedTo
+          isRecentlyListenedToScreenInView
         );
     }, [])
   );
@@ -100,11 +102,12 @@ const Hallway: FC<Props> = ({ navigation }) => {
         horizontal={true}
         centerContent={true}
         pagingEnabled={true}
-        contentOffset={{ x: width, y: 0 }} //scroll to hallway when the component mounts
+        contentOffset={{ x: width * 0.8, y: 0 }} //scroll to hallway when the component mounts
         onScroll={scrollViewHandler}
         ref={scrollRef}
+        showsHorizontalScrollIndicator={false}
       >
-        <View style={{ width }}></View>
+        <View style={{ width: width * 0.8 }}></View>
         <View>
           <Animated.View
             style={[styles.searchBarContainer, searchBarAnimatedStyle]}
@@ -157,7 +160,7 @@ const Hallway: FC<Props> = ({ navigation }) => {
         </View>
       </Animated.ScrollView>
       <HallwayFooter
-        parentScrollValue={scrollViewX}
+        parentScrollValue={scrollViewOffset}
         parentScrollViewRef={scrollRef}
       />
       <Portal>
@@ -180,6 +183,7 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {
     paddingHorizontal: 20,
+    paddingBottom: 20,
     position: "absolute",
     zIndex: 1,
   },

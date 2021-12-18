@@ -5,8 +5,8 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { Entypo, Ionicons } from "@expo/vector-icons";
-import { Avatar, Divider } from "../../components";
+import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { Avatar, BottomSheet, Divider } from "../../components";
 import { RouteProp, useFocusEffect, useTheme } from "@react-navigation/native";
 import Animated, {
   interpolate,
@@ -17,7 +17,7 @@ import Animated, {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StackParamList } from "../../types";
 import { FlatList } from "react-native-gesture-handler";
-import { RoomAvatar } from "./components";
+import { RoomAvatar, RoomMenu } from "./components";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { joinRoom } from "../../features";
 
@@ -80,6 +80,7 @@ const Rooms = ({ navigation, route }: Props) => {
 
   return (
     <View style={[styles.container]}>
+      {/* ===========Screen header starts here=================== */}
       <Animated.View style={[styles.flexItems, animatedHeaderStyle]}>
         <Entypo
           name="chevron-down"
@@ -94,7 +95,12 @@ const Rooms = ({ navigation, route }: Props) => {
           <Avatar size={35} />
         </View>
       </Animated.View>
+      {/* ===========Screen header ends here=================== */}
+
       <Animated.View style={[styles.rooms, animatedRoomStyle]}>
+        <View style={{ padding: 10 }}>
+          <RoomMenu />
+        </View>
         <View style={{ flex: 1 }}>
           {isRoomLoaded ? (
             <FlatList
@@ -155,6 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    overflow: "hidden",
   },
   iconCircle: {
     width: 30,
