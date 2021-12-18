@@ -25,9 +25,13 @@ import Animated, {
 import { useCustomBacKHandler } from "../hooks";
 
 interface Props {
+  /**React component that will open the bottom sheet when tapped */
   anchor: JSX.Element;
+  /**Maximum height of the bottomSheet*/
   maxHeight: number;
+  /**Style for the bottomsheet */
   bottomSheetContainerStyle?: ViewStyle;
+  /**React component that will be displayed inside the bottom sheet */
   content: JSX.Element;
 }
 
