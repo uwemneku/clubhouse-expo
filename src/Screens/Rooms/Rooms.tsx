@@ -34,7 +34,9 @@ const Rooms = ({ navigation, route }: Props) => {
   const dispatch = useAppDispatch();
   const { height } = useWindowDimensions();
   const transformY = useSharedValue(height);
-  const [isFocused, setIsFocused] = useState(true);
+  const [isScreenFocused, setIsScreenFocused] = useState(true);
+  // checks if the user was is in the room or not by comparing the id of the room
+  // if the room was minimized, the id will be the same as the active room id
   const isNewRoom = id !== activeRoomId;
   const [isRoomLoaded, setIsRoomLoaded] = useState(!isNewRoom);
 
@@ -55,7 +57,7 @@ const Rooms = ({ navigation, route }: Props) => {
   useFocusEffect(
     useCallback(() => {
       transformY.value = 0;
-      setIsFocused(true);
+      setIsScreenFocused(true);
     }, [])
   );
 

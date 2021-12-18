@@ -24,17 +24,32 @@ You can view the app on Expo. Visit  https://expo.dev/@uwemneku/clubhouse-expo o
 * [@react-navigation/native](https://reactnavigation.org/)
 * [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/)
 
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [x] Add navigation dependencies
+- [x] Set up project file structure 
+- [x] Add <a href="https://github.com/uwemneku/clubhouse-expo/blob/master/src/Screens/Hallway/components/ActiveRooms.tsx">Active Room Component</a> to displays active club rooms in the hallway)- [ ] Add Additional Templates w/ Examples
+- [x] Add a <a href="https://github.com/uwemneku/clubhouse-expo/blob/master/src/Screens/Hallway/Hallway.tsx#L127">swipe listener</a> to hallway screen which opens the back channel screen when activated
+- [x] Add <a href="https://github.com/uwemneku/clubhouse-expo/tree/master/src/components">global app</a>  components
+- [x] Add <a href="https://github.com/uwemneku/clubhouse-expo/tree/master/src/Screens/Explore">Explore</a> and <a href="https://github.com/uwemneku/clubhouse-expo/tree/master/src/Screens/RecentlyListenedTo">Recently Listened To</a> screen 
+- [x] Add <a href="https://github.com/uwemneku/clubhouse-expo/tree/master/src/Screens/Rooms">Room screen </a>  
+- [x] Add Avatar and Icon animations to the room screen for when users enter, exit or minimize a room 
+
+
+
 <!-- GETTING STARTED -->
 ## Getting Started
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 <p>
-Make sure you <a href="https://reactnative.dev/docs/environment-setup"> react native development environment</a> set up in your system 
+Make sure you have <a href="https://reactnative.dev/docs/environment-setup"> react native development environment</a> set up in your system 
 
 Install expo-cli
 ```sh
-    npm instal -g expo-cli
+    npm install -g expo-cli
 ```
 </a>
 
@@ -57,7 +72,6 @@ Install expo-cli
    expo **start**
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
