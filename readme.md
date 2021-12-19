@@ -73,8 +73,15 @@ Install expo-cli
 
 3. Start the App on expo
    ```sh
-   expo **start**
+   expo start
    ```
+
+
+### Resources
+| Topic      | Helpful links Links | How I used It | Code
+| ----------- | ----------- |--------------|------------|
+| How to close a modal when the back button is pressed      | <a href="https://github.com/react-native-modal/react-native-modal/issues/115">React Native  repository  | The bottomSheet component was rendered inside a modal. I tried using <a href="https://reactnative.dev/docs/backhandler">BackHandler</a> but it failed. This helped me close it when the back button is pressed
+| How to make a screen background transparent during navigation   | <a href="https://www.youtube.com/watch?v=NenHL6nBR_4&list=PLS1zufRhr-xjVIR7prTzNqHrKZ0OkGDLH&index=11&t=217s">YouTube Video</a>        |
 
 
 
