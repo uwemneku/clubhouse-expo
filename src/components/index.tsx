@@ -10,4 +10,4 @@ export { default as People } from "./People";
 export { default as ScreenHeader } from "./ScreenHeader";
 export { default as ShareIcon } from "./ShareIcon";
 export { default as BottomSheet } from "./BottomSheet";
-export { default as AppFooter } from "./AppFooter";
+export { default as AppFooter } from "./RoomFooter";
