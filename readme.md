@@ -5,13 +5,17 @@
 <p>
 This is a simple UI clone of Clubhouse mobile application. Scan the qr code below to view on expo
 </p>
-<img src="./ScreenShots/qrCode.PNG"  />
+</div>
+<div align="center">
+<img src="./ScreenShots/clubhouse1.png" width="200">
+<img src="./ScreenShots/clubhouse.png"  width="200">
 </div>
 
 
 ### Demo
 
 You can view the app on Expo. Visit  https://expo.dev/@uwemneku/clubhouse-expo or scan the QR code below to view
+<img src="./ScreenShots/qrCode.PNG" width="100" />
 
 
 

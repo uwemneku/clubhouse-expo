@@ -44,7 +44,7 @@ const ActiveRooms = () => {
       >
         <View style={{ flex: 1 }}>
           <View style={styles.flexItems}>
-            <AppText weight="normal">RANTS&sBANTS</AppText>
+            <AppText weight="normal">Typescript{"  "}</AppText>
             <Foundation name="home" size={20} color={colors.primary} />
           </View>
           <AppText
@@ -54,7 +54,7 @@ const ActiveRooms = () => {
             ellipsizeMode="tail"
             lineBreakMode="clip"
           >
-            Is it time to canacel Tion Wayne? #rants&bants
+            Why should you switch to Typescript
           </AppText>
         </View>
         <MenuButton />
