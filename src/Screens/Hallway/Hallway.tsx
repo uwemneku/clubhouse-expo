@@ -15,7 +15,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { AppFooter, Divider } from "../../components";
+import { RoomFooter, Divider } from "../../components";
 import { StackParamList } from "../../types";
 import {
   ActiveRooms,
@@ -164,7 +164,7 @@ const Hallway: FC<Props> = ({ navigation }) => {
         parentScrollViewRef={scrollRef}
       />
       <Portal>
-        <AppFooter />
+        <RoomFooter />
       </Portal>
     </View>
   );
